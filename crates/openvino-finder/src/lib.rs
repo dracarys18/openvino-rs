@@ -123,11 +123,21 @@ cfg_if! {
 const KNOWN_INSTALLATION_SUBDIRECTORIES: &[&str] =
     &["runtime/lib/intel64", "runtime/3rdparty/tbb/lib"];
 
-const KNOWN_BUILD_SUBDIRECTORIES: &[&str] = &[
-    "bin/intel64/Debug/lib",
-    "bin/intel64/Release/lib",
-    "temp/tbb/lib",
-];
+cfg_if! {
+    if #[cfg(any(target_os = "windows"))] {
+    const KNOWN_BUILD_SUBDIRECTORIES: &[&str] = &[
+        "bin/intel64/Debug",
+        "bin/intel64/Release",
+        "temp/tbb/lib",
+        ];
+    } else {
+        const KNOWN_BUILD_SUBDIRECTORIES: &[&str] = &[
+        "bin/intel64/Debug/lib",
+        "bin/intel64/Release/lib",
+        "temp/tbb/lib",
+        ];
+    }
+}
 
 #[cfg(test)]
 mod test {
